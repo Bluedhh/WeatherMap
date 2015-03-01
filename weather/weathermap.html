@@ -127,6 +127,10 @@
         		   var div = document.getElementById('stationDetails');
         		   div.innerHTML = stationDetails(d,points);
       			  };
+  var clickPoint = function(d) {console.log('d', d, 'event', d3.event);
+    			   usa.attr('fill-opacity', 1.0); // Another update!
+        		   stationLatest(d,points);
+      			  };
 
   var svg = d3.select("#map")
       .append("svg")
@@ -167,7 +171,7 @@
           .attr('stroke-width', '1')
           .attr('stroke', 'steelblue')
           .attr('fill', 'steelblue')
-	  .on('click', clickStation);
+	  .on('click', clickPoint);
 
       lastLat = 30.0;
 
@@ -218,8 +222,8 @@ function stationDetails(d,points) {
                    '<br> Rank: ' + d.Rank + ' of ' + points +
                    '</h3><hr><table>' +
                    '<tr><td>Elevation</td><td> ' + d.Elevation + '</td></tr>' +
-                   '<tr><td>Latitude</td><td>' + d.Latitude + '</td></tr>' +
-                   '<tr><td>Longitude</td><td> ' + d.Longitude + '</td></tr>' +
+                   '<tr><td>Latitude</td><td>' + d.Latitude + 'º</td></tr>' +
+                   '<tr><td>Longitude</td><td> ' + d.Longitude + 'º</td></tr>' +
 		   '</table><hr><table>' +
                    '<tr><td>Readings</td><td> ' + d.Readings + ' (' + d.Latest + ')' + '</td></tr>' +
                    '<tr><td>% Nice days</td><td> <b>' + d.NicePct + '%</b></td></tr>' +
@@ -229,15 +233,49 @@ function stationDetails(d,points) {
                    '<tr><td>% Cold days</td><td> ' + d.ColdPct + '%</td></tr>' +
                    '<tr><td>% Humid days</td><td> ' + d.HumidPct + '%</td></tr>' +
                    '<tr><td>% Rainy days*</td><td>' + d.RainyPct + '%</td></tr>' +
-                   '<tr><td>Avg temp</td><td> ' + d.AvgTemp + '</td></tr>' +
-                   '<tr><td>Max temp</td><td> ' + d.MaxTemp + '</td></tr>' +
-                   '<tr><td>Min temp</td><td> ' + d.MinTemp + '</td></tr>' +
-                   '<tr><td>Avg humidity</td><td> ' + d.AvgHumid + '</td></tr>' +
-                   '<tr><td>Avg dew point</td><td> ' + d.AvgDP + '</td></tr>' +
+                   '<tr><td>Avg temp</td><td> ' + d.AvgTemp + 'º</td></tr>' +
+                   '<tr><td>Max temp</td><td> ' + d.MaxTemp + 'º</td></tr>' +
+                   '<tr><td>Min temp</td><td> ' + d.MinTemp + 'º</td></tr>' +
+                   '<tr><td>Avg humidity</td><td> ' + d.AvgHumid + '%</td></tr>' +
+                   '<tr><td>Avg dew point</td><td> ' + d.AvgDP + 'º</td></tr>' +
 		   '</table><hr>Summary of 2:00pm readings' +
                    '<br>Nice = between 50 to 80 degrees' +
                    '<br>* Rain data is unreliable';
 	return html;
+}
+function stationLatest(d,points) {
+	var xmlhttp = new XMLHttpRequest();
+	var url = '../php/stationLatest.php?station=' + d.Station;
+	xmlhttp.onreadystatechange = function() {
+	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	        var myArr = JSON.parse(xmlhttp.responseText);
+	        myFunction(myArr);
+	    }
+	}
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+
+	function myFunction(arr) {
+	    var html = '<h3>' + d.Name + 
+                   '<br> Rank: ' + d.Rank + ' of ' + points +
+                   '</h3><hr><table>' +
+                   '<tr><td>Elevation</td><td> ' + d.Elevation + '</td></tr>' +
+                   '<tr><td>Latitude</td><td>' + d.Latitude + 'º</td></tr>' +
+                   '<tr><td>Longitude</td><td> ' + d.Longitude + 'º</td></tr>' +
+		   '</table><hr><table>' +
+                   '<tr><td>Reading</td><td> ' + arr[0].When + '</td></tr>' +
+                   '<tr><td>Temperature</td><td>' + arr[0].Temperature + 'º</td></tr>' +
+                   '<tr><td>Humidity</td><td>' + arr[0].Humidity + '%</td></tr>' +
+                   '<tr><td>DewPoint</td><td>' + arr[0].DewPoint + 'º</td></tr>' +
+                   '<tr><td>Wind Direction</td><td>' + arr[0].WindDir + '</td></tr>' +
+                   '<tr><td>Wind Speed</td><td>' + arr[0].WindSpeed + '</td></tr>' +
+                   '<tr><td>Wind Gust</td><td>' + arr[0].WindGust + '</td></tr>' +
+                   '<tr><td>Pressure</td><td>' + arr[0].Pressure + '</td></tr>' +
+                   '<tr><td>Rain Rate</td><td>' + arr[0].RainRate + '</td></tr>' +
+		   '</table><hr>Latest data';
+	    var div = document.getElementById('stationDetails');
+	    div.innerHTML = html;
+	}
 }
 
  </script>

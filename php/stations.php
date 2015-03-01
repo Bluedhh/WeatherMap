@@ -9,6 +9,7 @@
 
     $myquery = "
 select @rownum := @rownum + 1 Rank
+     , Station
      , Name
      , Display
      , Latitude
@@ -29,7 +30,8 @@ select @rownum := @rownum + 1 Rank
      , `Humid%` as HumidPct
      , `Rainy%` as RainyPct
 FROM (select @rownum := 0) as r
-   , (Select Xref.Name
+   , (Select Xref.Station
+     , Xref.Name
      , Xref.Display
      , Xref.Latitude
      , Xref.Longitude
