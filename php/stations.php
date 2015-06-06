@@ -27,6 +27,7 @@ select @rownum := @rownum + 1 Rank
      , `Cold%` as ColdPct
      , `Cool%` as CoolPct
      , `Nice%` as NicePct
+     , `Nice%` + `Cool%` + `Warm%` as DecentPct
      , AvgHumid
      , AvgDP
      , `Humid%` as HumidPct
