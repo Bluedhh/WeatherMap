@@ -77,7 +77,7 @@ FROM (select @rownum := 0) as r
   left join (select Station
              , count(*) ReallyHotDays
           from vLog il
-         where HeatIndex between 90 and 130
+         where HeatIndex between 90.1 and 130
            and hour(il.When) = 14
            and date(il.When) >= '2012-01-01'
          group by Station) as rhd
@@ -85,7 +85,7 @@ FROM (select @rownum := 0) as r
   left join (select Station
              , count(*) HotDays
           from vLog il
-         where HeatIndex between 80 and 90
+         where HeatIndex between 80.1 and 90
            and hour(il.When) = 14
            and date(il.When) >= '2012-01-01'
          group by Station) as hd
@@ -93,7 +93,7 @@ FROM (select @rownum := 0) as r
   left join (select Station
              , count(*) ColdDays
           from Log il
-         where Temperature between -40 and 30
+         where Temperature between -40 and 29.9
            and hour(il.When) = 14
            and date(il.When) >= '2012-01-01'
          group by Station) as cd
@@ -101,7 +101,7 @@ FROM (select @rownum := 0) as r
   left join (select Station
              , count(*) CoolDays
           from Log il
-         where Temperature between 30 and 50
+         where Temperature between 30 and 49.9
            and hour(il.When) = 14
            and date(il.When) >= '2012-01-01'
          group by Station) as coold
