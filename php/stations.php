@@ -20,6 +20,8 @@ select @rownum := @rownum + 1 Rank
      , AvgTemp
      , MaxTemp
      , MinTemp
+     , NightlyAvg
+     , AvgTemp - NightlyAvg DailyDiff
      , `Hot%` as HotPct
      , `Warm%` as WarmPct
      , `Cold%` as ColdPct
@@ -41,6 +43,7 @@ FROM (select @rownum := 0) as r
      , Round(Avg(Temperature),1) AvgTemp
      , max(Temperature) MaxTemp
      , min(Temperature) MinTemp
+     , NightlyAvg
      , coalesce(Round((ReallyHotDays / count(*))*100,1),0) `Hot%`
      , coalesce(Round((HotDays / count(*))*100,1),0) `Warm%`
      , coalesce(Round((ColdDays / count(*))*100,1),0) `Cold%`
@@ -110,12 +113,19 @@ FROM (select @rownum := 0) as r
            and date(il.When) >= '2012-01-01'
          group by Station) as nd
     on nd.Station = ol.Station
+  left join (select Station
+             , Round(avg(Temperature),1) NightlyAvg
+          from Log il
+         where hour(il.When) = 2
+           and date(il.When) >= '2012-01-01'
+         group by Station) as na
+    on na.Station = ol.Station
  where Temperature between -40 and 130
    and hour(ol.When) = 14
    and date(ol.When) >= '2012-01-01'
  group by Xref.Name) as x
  WHERE DATEDIFF(NOW(),Latest) < 30
- order by `Nice%` desc, `Humid%` asc
+ order by `Nice%` desc, `Humid%` asc;
 ";
     $query = mysql_query($myquery);
     
