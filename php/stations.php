@@ -92,7 +92,7 @@ FROM (select @rownum := 0) as r
     on hd.Station = ol.Station
   left join (select Station
              , count(*) ColdDays
-          from Log il
+          from vLog il
          where HeatIndex between -40 and 29.9
            and hour(il.When) = 14
            and date(il.When) >= '2012-01-01'
@@ -100,7 +100,7 @@ FROM (select @rownum := 0) as r
     on cd.Station = ol.Station
   left join (select Station
              , count(*) CoolDays
-          from Log il
+          from vLog il
          where HeatIndex between 30 and 49.9
            and hour(il.When) = 14
            and date(il.When) >= '2012-01-01'
@@ -108,7 +108,7 @@ FROM (select @rownum := 0) as r
     on coold.Station = ol.Station
   left join (select Station
              , count(*) NiceDays
-          from Log il
+          from vLog il
          where HeatIndex between 50 and 80
            and hour(il.When) = 14
            and date(il.When) >= '2012-01-01'
@@ -116,7 +116,7 @@ FROM (select @rownum := 0) as r
     on nd.Station = ol.Station
   left join (select Station
              , Round(avg(HeatIndex),1) NightlyAvg
-          from Log il
+          from vLog il
          where hour(il.When) = 2
            and date(il.When) >= '2012-01-01'
          group by Station) as na
