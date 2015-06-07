@@ -11,7 +11,7 @@
 
     $myquery = "
 select * 
-  FROM Log 
+  FROM vLog 
  where Station = '" . $station . "'
    and `When` = (Select max(`When`) 
                    from Log 
