@@ -226,12 +226,12 @@ function stationDetails(d,points) {
                    '<tr><td>Longitude</td><td> ' + d.Longitude + 'º</td></tr>' +
 		   '</table><hr><table>' +
                    '<tr><td>Readings</td><td> ' + d.Readings + ' (' + d.Latest + ')' + '</td></tr>' +
-                   '<tr><td>% Nice days</td><td> <b>' + d.NicePct + '%</b></td></tr>' +
-                   '<tr><td>% Decent days</td><td> <b>' + d.DecentPct + '%</b></td></tr>' +
-                   '<tr><td>% Warm days</td><td> ' + d.WarmPct + '%</td></tr>' +
-                   '<tr><td>% Cool days</td><td> ' + d.CoolPct + '%</td></tr>' +
-                   '<tr><td>% Hot days</td><td> ' + d.HotPct + '%</td></tr>' +
-                   '<tr><td>% Cold days</td><td> ' + d.ColdPct + '%</td></tr>' +
+                   '<tr><td>% Nice days (50-80)</td><td> <b>' + d.NicePct + '%</b></td></tr>' +
+                   '<tr><td>% Decent days (30-90)</td><td> <b>' + d.DecentPct + '%</b></td></tr>' +
+                   '<tr><td>% Warm days (80-90)</td><td> ' + d.WarmPct + '%</td></tr>' +
+                   '<tr><td>% Cool days (30-50)</td><td> ' + d.CoolPct + '%</td></tr>' +
+                   '<tr><td>% Hot days (&gt;90)</td><td> ' + d.HotPct + '%</td></tr>' +
+                   '<tr><td>% Cold days (&lt;30)</td><td> ' + d.ColdPct + '%</td></tr>' +
                    '<tr><td>% Humid days</td><td> ' + d.HumidPct + '%</td></tr>' +
                    '<tr><td>% Rainy days*</td><td>' + d.RainyPct + '%</td></tr>' +
                    '<tr><td>Avg temp</td><td> ' + d.AvgTemp + 'º</td></tr>' +
