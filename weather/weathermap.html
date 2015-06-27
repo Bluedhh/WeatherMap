@@ -182,11 +182,41 @@
           .attr('y', function(d) {return placeStation(d,1)})
           .attr('dx', 5)
           .attr('dy', 3)
-          .attr('fill', "black")
+          .attr('stroke', function(d) {return determineColor(d,points)})
 	  .on('click', clickStation)
           .text(function(d) {return d.Name});
 
       clickStation(cities[0]);
+
+      svg.select('g')
+       .append('text')
+       .attr('stroke', 'green')
+       .attr('x', 900)
+       .attr('y', 10)
+       .attr('class', 'maptext')
+       .text('Top Percentile')
+      svg.select('g')
+       .append('text')
+       .attr('stroke', 'blue')
+       .attr('x', 900)
+       .attr('y', 25)
+       .attr('class', 'maptext')
+       .text('2nd Percentile')
+      svg.select('g')
+       .append('text')
+       .attr('stroke', 'orange')
+       .attr('x', 900)
+       .attr('y', 40)
+       .attr('class', 'maptext')
+       .text('3rd Percentile')
+      svg.select('g')
+       .append('text')
+       .attr('stroke', 'red')
+       .attr('x', 900)
+       .attr('y', 55)
+       .attr('class', 'maptext')
+       .text('Bottom Percentile')
+
 
     });
 
@@ -211,7 +241,14 @@ function placeStation(d,ll) {
 	};
 	return projection([lon, lat])[ll];
 }
-
+function determineColor(d,points) {
+        var rank = d.Rank;
+	var tot = points;
+	if (rank / tot < .25) {return 'green'};
+	if (rank / tot < .5) {return 'blue'};
+	if (rank / tot < .75) {return 'orange'};
+	return 'red';
+}
 })();
 
 function wrapName(d) {
@@ -242,7 +279,6 @@ function stationDetails(d,points) {
                    '<tr><td>Avg humidity</td><td> ' + d.AvgHumid + '%</td></tr>' +
                    '<tr><td>Avg dew point</td><td> ' + d.AvgDP + 'º</td></tr>' +
 		   '</table><hr>Summary of 2:00pm readings' +
-                   '<br>Nice = between 50 to 80 degrees' +
                    '<br>* Rain data is unreliable';
 	return html;
 }
