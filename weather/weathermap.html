@@ -293,7 +293,7 @@ function stationLatest(d,points,lastDet,lastDetDate) {
   	   var myDate = new Date(lastDetDate);
 	   var dayOfMonth = myDate.getDate();
 	   myDate.setDate(dayOfMonth - 1);
-           lastDetDate = myDate.getFullYear() + '-' + myDate.getMonth() + '-' + myDate.getDate();
+           lastDetDate = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate();
         } else {
  	   lastDet = d.Station;
            lastDetDate = '2099-12-31';
