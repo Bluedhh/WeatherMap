@@ -300,14 +300,14 @@ function stationLatest(d,points,lastDet,lastDetDate) {
  	}
 	var xmlhttp = new XMLHttpRequest();
 	var url = '../php/stationLatest.php?station=' + d.Station + '&date='+ lastDetDate;
-	xmlhttp.onreadystatechange = function() {
-	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-	        var myArr = JSON.parse(xmlhttp.responseText);
-	        myFunction(myArr);
-	    }
-	}
-	xmlhttp.open("GET", url, true);
+
+	xmlhttp.open("GET", url, false);
 	xmlhttp.send();
+
+        if (xmlhttp.status === 200) {
+	   var myArr = JSON.parse(xmlhttp.responseText);
+	   myFunction(myArr);
+	}
 
     	return {lastDet: lastDet,
         	lastDetDate: lastDetDate}
