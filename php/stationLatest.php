@@ -18,7 +18,7 @@ select *
                    from Log 
                   where Station = '" . $station . "'
                     and hour(`When`) = 14
-                    and date(`When`) < '" . $date . "')";
+                    and date(`When`) <= '" . $date . "')";
 
     $query = mysql_query($myquery);
     
