@@ -132,7 +132,9 @@
       			  };
   var clickPoint = function(d) {console.log('d', d, 'event', d3.event);
     			   usa.attr('fill-opacity', 1.0); // Another update!
-        		   stationLatest(d,points,lastDet,lastDetDate);
+        		   var rez = stationLatest(d,points,lastDet,lastDetDate);
+			   lastDet = rez.lastDet;
+			   lastDetDate = rez.lastDetDate;
       			  };
 
   var svg = d3.select("#map")
@@ -305,6 +307,9 @@ function stationLatest(d,points,lastDet,lastDetDate) {
 	}
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
+
+    	return {lastDet: lastDet,
+        	lastDetDate: lastDetDate}
 
 	function myFunction(arr) {
 	    lastDetDate = arr[0].When;
