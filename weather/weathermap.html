@@ -187,6 +187,7 @@
           .attr('y', function(d) {return placeStation(d,1)})
           .attr('dx', 5)
           .attr('dy', 3)
+	  .attr('transform', 'rotate(-10)')
           .attr('stroke', function(d) {return determineColor(d,points)})
 	  .on('click', clickStation)
           .text(function(d) {return d.Name + ' (' + d.Rank + ')'});
