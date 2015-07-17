@@ -100,6 +100,8 @@
     .scaleExtent([1, 4])
     .on("zoom", zoomed);  
 
+  var clickNice = function() {location.reload();};
+
   var clickState = function(d) {console.log('clickState');
         		   var div = document.getElementById('stateLabel');
                 	   if (div.style.left != '-150px' && lastLabel == d.properties.NAME_1)
@@ -197,30 +199,34 @@
        .append('text')
        .attr('stroke', 'black')
        .attr('x', 400)
-       .attr('y', 10)
+       .attr('y', 25)
        .attr('class', 'maptext')
-       .text('Rank by Nice %')
+       .on('click', clickRankNice)
+       .text('Rank by Nice %');
       svg.select('g')
        .append('text')
        .attr('stroke', 'black')
        .attr('x', 500)
-       .attr('y', 10)
+       .attr('y', 25)
        .attr('class', 'maptext')
-       .text('Rank by Nice & Humid')
+       .on('click', clickRankNiceHumid)
+       .text('Rank by Nice & Humid');
       svg.select('g')
        .append('text')
        .attr('stroke', 'black')
        .attr('x', 600)
-       .attr('y', 10)
+       .attr('y', 25)
        .attr('class', 'maptext')
-       .text('Rank by Decent %')
+       .on('click', clickRankDecent)
+       .text('Rank by Decent %');
       svg.select('g')
        .append('text')
        .attr('stroke', 'black')
        .attr('x', 700)
-       .attr('y', 10)
+       .attr('y', 25)
        .attr('class', 'maptext')
-       .text('Rank by Decent & Humid')
+       .on('click', clickRankDecentHumid)
+       .text('Rank by Decent & Humid');
 
       svg.select('g')
        .append('text')
