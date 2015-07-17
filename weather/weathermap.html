@@ -100,7 +100,10 @@
     .scaleExtent([1, 4])
     .on("zoom", zoomed);  
 
-  var clickNice = function() {location.reload();};
+  var clickRankNice = function() {location.reload();};
+  var clickRankNiceHumid = function() {location.reload();};
+  var clickRankDecent = function() {location.reload();};
+  var clickRankDecentHumid = function() {location.reload();};
 
   var clickState = function(d) {console.log('clickState');
         		   var div = document.getElementById('stateLabel');
