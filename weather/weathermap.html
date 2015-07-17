@@ -60,22 +60,6 @@
       left:15px;
       font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     }
-    #rankOptions {
-      pointer-events: none;
-      position: absolute;
-      z-index: 2;
-      background: rgba(200,200,200,1.0);
-      border-style: solid;
-      border-width: 1px;
-      width:240px;
-      height:50px;
-      color:blue;
-      font-size: 12px;
-      padding:5px;
-      top:560px;
-      left:15px;
-      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    }
     .overlay {
       fill: none;
       pointer-events: all;
@@ -86,15 +70,6 @@
 <body>
   <div id="map" class="mapdiv"></div>
   <div id="stationDetails"></div>
-  <div id="rankOptions">
-    <form>
-      <input type="radio" name="rankOption" value="Nice" checked>"Nice"
-      <input type="radio" name="rankOption" value="Nice+Humid">"Nice+Humid"
-      <br>
-      <input type="radio" name="rankOption" value="Decent">"Decent"
-      <input type="radio" name="rankOption" value="Decent+Humid">"Decent+Humid"
-    </form>
-  </div>
   <div id="stateLabel"></div>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
@@ -217,6 +192,35 @@
           .text(function(d) {return d.Name + ' (' + d.Rank + ')'});
 
       clickStation(cities[0]);
+
+      svg.select('g')
+       .append('text')
+       .attr('stroke', 'black')
+       .attr('x', 400)
+       .attr('y', 10)
+       .attr('class', 'maptext')
+       .text('Rank by Nice %')
+      svg.select('g')
+       .append('text')
+       .attr('stroke', 'black')
+       .attr('x', 500)
+       .attr('y', 10)
+       .attr('class', 'maptext')
+       .text('Rank by Nice & Humid')
+      svg.select('g')
+       .append('text')
+       .attr('stroke', 'black')
+       .attr('x', 600)
+       .attr('y', 10)
+       .attr('class', 'maptext')
+       .text('Rank by Decent %')
+      svg.select('g')
+       .append('text')
+       .attr('stroke', 'black')
+       .attr('x', 700)
+       .attr('y', 10)
+       .attr('class', 'maptext')
+       .text('Rank by Decent & Humid')
 
       svg.select('g')
        .append('text')
