@@ -132,7 +132,7 @@
       			  };
   var clickPoint = function(d) {console.log('d', d, 'event', d3.event);
     			   usa.attr('fill-opacity', 1.0); // Another update!
-        		   stationLatest(d,points);
+        		   stationLatest(d,points,lastDet,lastDetDate);
       			  };
 
   var svg = d3.select("#map")
@@ -286,7 +286,7 @@ function stationDetails(d,points) {
                    '<br>* Rain data is unreliable';
 	return html;
 }
-function stationLatest(d,points) {
+function stationLatest(d,points,lastDet,lastDetDate) {
         if (d.Station == lastDet) {
   	   var myDate = new Date(lastDetDate);
 	   var dayOfMonth = myDate.getDate();
