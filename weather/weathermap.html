@@ -184,7 +184,7 @@
           .attr('dy', 3)
           .attr('stroke', function(d) {return determineColor(d,points)})
 	  .on('click', clickStation)
-          .text(function(d) {return d.Name});
+          .text(function(d) {return d.Name + ' (' + d.Rank + ')'});
 
       clickStation(cities[0]);
 
