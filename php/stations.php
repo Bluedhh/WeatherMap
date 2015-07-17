@@ -17,6 +17,7 @@ select @rownum := @rownum + 1 Rank
      , Elevation
      , Latest
      , Readings
+     , AvgHI
      , AvgTemp
      , MaxTemp
      , MinTemp
@@ -41,6 +42,7 @@ FROM (select @rownum := 0) as r
      , Xref.Elevation
      , Date(max(ol.When)) Latest
      , count(*) Readings
+     , Round(Avg(HeatIndex),1) AvgHI
      , Round(Avg(Temperature),1) AvgTemp
      , max(Temperature) MaxTemp
      , min(Temperature) MinTemp
