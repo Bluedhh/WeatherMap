@@ -8,6 +8,7 @@
     $connection = mysql_select_db($database, $server);
 
     $station = $_GET["station"];
+    $date = $_GET["date"];
 
     $myquery = "
 select * 
@@ -16,7 +17,8 @@ select *
    and `When` = (Select max(`When`) 
                    from Log 
                   where Station = '" . $station . "'
-                    and hour(`When`) = 14)";
+                    and hour(`When`) = 14
+                    and date(`When`) < '" . $date . "')";
 
     $query = mysql_query($myquery);
     

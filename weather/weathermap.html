@@ -285,7 +285,7 @@ function stationDetails(d,points) {
 }
 function stationLatest(d,points) {
 	var xmlhttp = new XMLHttpRequest();
-	var url = '../php/stationLatest.php?station=' + d.Station;
+	var url = '../php/stationLatest.php?station=' + d.Station + '&date=2099-12-31';
 	xmlhttp.onreadystatechange = function() {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	        var myArr = JSON.parse(xmlhttp.responseText);
