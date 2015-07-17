@@ -85,6 +85,9 @@
   var points = 0;
   var lastLat = 30.0;
 
+  var lastDet = '';
+  var lastDetDate = '2099-12-31';
+
   var path = d3.geo.path().projection(projection);
 
   var zoomed = function () {
@@ -284,8 +287,16 @@ function stationDetails(d,points) {
 	return html;
 }
 function stationLatest(d,points) {
+        if (d.Station == lastDet) {
+  	   var myDate = new Date(lastDetDate);
+	   var dayOfMonth = myDate.getDate();
+	   myDate.setDate(dayOfMonth - 1);
+           lastDetDate = myDate.getFullYear() + '-' + myDate.getMonth() + '-' + myDate.getDate();
+        } else {
+           lastDetDate = '2099-12-31';
+ 	}
 	var xmlhttp = new XMLHttpRequest();
-	var url = '../php/stationLatest.php?station=' + d.Station + '&date=2099-12-31';
+	var url = '../php/stationLatest.php?station=' + d.Station + '&date='+ lastDetDate;
 	xmlhttp.onreadystatechange = function() {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	        var myArr = JSON.parse(xmlhttp.responseText);
@@ -296,6 +307,7 @@ function stationLatest(d,points) {
 	xmlhttp.send();
 
 	function myFunction(arr) {
+	    lastDetDate = arr[0].When;
 	    var html = '<h3>' + d.Name + 
                    '<br> Rank: ' + d.Rank + ' of ' + points +
                    '</h3><hr><table>' +
