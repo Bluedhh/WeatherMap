@@ -128,7 +128,7 @@ FROM (select @rownum := 0) as r
    and date(ol.When) >= '2012-01-01'
  group by Xref.Name) as x
  WHERE DATEDIFF(NOW(),Latest) < 30
- order by `Nice%` + 100 - `Humid%` asc;
+ order by `Nice%` + 100 - `Humid%` desc;
 ";
     $query = mysql_query($myquery);
     
