@@ -36,6 +36,8 @@ select @rownum := @rownum + 1 Rank
      , AvgDP
      , `Humid%` as HumidPct
      , `Rainy%` as RainyPct
+     , `Nice%` - `Humid%` as NiceHumid
+     , `Nice%` + `Cool%` + `Warm%` - `Humid%` as DecentHumid
 FROM (select @rownum := 0) as r
    , (Select Xref.Station
      , Xref.Name
