@@ -8,7 +8,6 @@
     $connection = mysql_select_db($database, $server);
 
     $rankBy = $_GET["rankBy"];
-    print($rankBy);
 
     $myquery = "
 select @rownum := @rownum + 1 Rank
