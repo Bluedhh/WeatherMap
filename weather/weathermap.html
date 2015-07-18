@@ -201,7 +201,7 @@
       clickStation(cities[0]);
 
       var txtcol = 'black';
-      if (rankBy == 'NicePct') txtcol = 'red';
+      if (rankBy == 'NicePct') {txtcol = 'red'};
       svg.select('g')
        .append('text')
        .attr('stroke', txtcol)
@@ -210,7 +210,7 @@
        .attr('class', 'maptext')
        .on('click', clickRankNice)
        .text('Rank by Nice %');
-      if (rankBy == 'NiceHumid') txtcol = 'red' else txtcol = 'black';
+      if (rankBy == 'NiceHumid') {txtcol = 'red'} else {txtcol = 'black'};
       svg.select('g')
        .append('text')
        .attr('stroke', txtcol)
@@ -219,7 +219,7 @@
        .attr('class', 'maptext')
        .on('click', clickRankNiceHumid)
        .text('Rank by Nice & Humid');
-      if (rankBy == 'DecentPct') txtcol = 'red' else txtcol = 'black';
+      if (rankBy == 'DecentPct') {txtcol = 'red'} else {txtcol = 'black'};
       svg.select('g')
        .append('text')
        .attr('stroke', txtcol)
@@ -228,7 +228,7 @@
        .attr('class', 'maptext')
        .on('click', clickRankDecent)
        .text('Rank by Decent %');
-      if (rankBy == 'DecentHumid') txtcol = 'red' else txtcol = 'black';
+      if (rankBy == 'DecentHumid') {txtcol = 'red'} else {txtcol = 'black'};
       svg.select('g')
        .append('text')
        .attr('stroke', txtcol)
