@@ -77,6 +77,8 @@
   <script>
 (function(){
 
+  var rankBy = location.search.split('rankBy=')[1] ? location.search.split('rankBy=')[1] : 'NicePct';
+
   var height = 640;
   var width = 1200;
   var projection = d3.geo.albersUsa();
@@ -100,10 +102,10 @@
     .scaleExtent([1, 4])
     .on("zoom", zoomed);  
 
-  var clickRankNice = function() {location.reload();};
-  var clickRankNiceHumid = function() {location.reload();};
-  var clickRankDecent = function() {location.reload();};
-  var clickRankDecentHumid = function() {location.reload();};
+  var clickRankNice = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=NicePct);};
+  var clickRankNiceHumid = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=NicePct+100-HumidPct);};
+  var clickRankDecent = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=DecentPct);};
+  var clickRankDecentHumid = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=DecentPct+100-HumidPct);};
 
   var clickState = function(d) {console.log('clickState');
         		   var div = document.getElementById('stateLabel');
@@ -168,7 +170,7 @@
     var color = d3.scale.linear().domain([0,50]).range(['#ffff00','#99dfd3']);
     usa.attr('fill', function(d,i) {return color(i)});
 
-    d3.json('../php/stations.php', function(cities) {
+    d3.json('../php/stations.php?rankBy='+rankBy, function(cities) {
       var cityPoints = svg.select('g').selectAll('circle').data(cities);
       var cityText = svg.select('g').selectAll('text').data(cities);
       points = cities.length;

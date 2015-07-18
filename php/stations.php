@@ -7,6 +7,8 @@
     $server = mysql_connect($host, $username, $password);
     $connection = mysql_select_db($database, $server);
 
+    $rankBy = $_GET["rankBy"];
+
     $myquery = "
 select @rownum := @rownum + 1 Rank
      , Station
@@ -128,7 +130,7 @@ FROM (select @rownum := 0) as r
    and date(ol.When) >= '2012-01-01'
  group by Xref.Name) as x
  WHERE DATEDIFF(NOW(),Latest) < 30
- order by `Nice%` + 100 - `Humid%` desc;
+ order by " . $rankBy . " desc;
 ";
     $query = mysql_query($myquery);
     
