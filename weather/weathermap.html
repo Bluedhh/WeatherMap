@@ -102,10 +102,10 @@
     .scaleExtent([1, 4])
     .on("zoom", zoomed);  
 
-  var clickRankNice = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=NicePct);};
-  var clickRankNiceHumid = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=NicePct+100-HumidPct);};
-  var clickRankDecent = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=DecentPct);};
-  var clickRankDecentHumid = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=DecentPct+100-HumidPct);};
+  var clickRankNice = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=NicePct');};
+  var clickRankNiceHumid = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=NicePct+100-HumidPct');};
+  var clickRankDecent = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=DecentPct');};
+  var clickRankDecentHumid = function() {location.replace('http://54.200.149.125/weather/weathermap.html?rankBy=DecentPct+100-HumidPct');};
 
   var clickState = function(d) {console.log('clickState');
         		   var div = document.getElementById('stateLabel');
