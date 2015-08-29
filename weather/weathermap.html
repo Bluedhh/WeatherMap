@@ -75,10 +75,10 @@
   <script src="http://d3js.org/topojson.v1.min.js"></script>
 
   <script>
-(
-var lastLat = 30.0;
-var lastLon = -118.0;
-function(){
+(function(){
+
+  var lastLat = 30.0;
+  var lastLon = -118.0;
 
   var rankBy = location.search.split('rankBy=')[1] ? location.search.split('rankBy=')[1] : 'NicePct';
 
