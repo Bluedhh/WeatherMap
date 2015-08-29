@@ -291,10 +291,10 @@ function placeStation(d,ll) {
 			lastLat = lastLat - 0.6;
 		};
 	};
-	if (lon == -118.0 && lat < 23.0) {
+	if (lon == -118.0 && lat < 24.0) {
 		lastLon = -110.0
 		lastLat = 27.6
-	}
+	};
 	return projection([lon, lat])[ll];
 }
 function determineColor(d,points) {
