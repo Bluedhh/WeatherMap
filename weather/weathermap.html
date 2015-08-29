@@ -75,7 +75,10 @@
   <script src="http://d3js.org/topojson.v1.min.js"></script>
 
   <script>
-(function(){
+(
+var lastLat = 30.0;
+var lastLon = -118.0;
+function(){
 
   var rankBy = location.search.split('rankBy=')[1] ? location.search.split('rankBy=')[1] : 'NicePct';
 
@@ -85,8 +88,6 @@
   var map = void 0;
   var lastLabel = void 0;
   var points = 0;
-  var lastLat = 30.0;
-  var lastLon = -118.0;
 
   var lastDet = '';
   var lastDetDate = '2099-12-31';
