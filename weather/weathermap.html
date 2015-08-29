@@ -77,9 +77,6 @@
   <script>
 (function(){
 
-  var lastLat = 30.0;
-  var lastLon = -118.0;
-
   var rankBy = location.search.split('rankBy=')[1] ? location.search.split('rankBy=')[1] : 'NicePct';
 
   var height = 640;
@@ -88,6 +85,8 @@
   var map = void 0;
   var lastLabel = void 0;
   var points = 0;
+  var lastLat = 30.0;
+  var lastLon = -118.0;
 
   var lastDet = '';
   var lastDetDate = '2099-12-31';
@@ -188,7 +187,6 @@
 	  .on('click', clickPoint);
 
       lastLat = 30.0;
-      lastLon = -118.0;
 
       cityText.enter()
           .append('text')
@@ -273,24 +271,25 @@
 
     });
 
+ <!--   svg.append("rect")	-->
+ <!--     .attr("class", "overlay")	-->
+ <!--     .attr("width", width)	-->
+ <!--     .attr("height", height)	-->
+ <!--     .call(zoom);		-->
+
   });
 
 function placeStation(d,ll) {
         var lat = lastLat;
-	var lon = lastLon;
+	var lon = -118.0;
 	if (d.Display == 1) {
-		lat = d.Latitude;
-		lon = d.Longitude;
+		lat = d.Latitude
+		lon = d.Longitude
 	} else {
 		if (ll == 1) {
 			lastLat = lastLat - 0.6;
 		};
-		if (lat < 24.0) {
-			lastLat = 29.4;
-			lastLon = lastLon - 8.0;
-		};
 	};
-
 	return projection([lon, lat])[ll];
 }
 function determineColor(d,points) {
