@@ -178,8 +178,8 @@
 
       cityPoints.enter()
           .append('circle')
-          .attr('cx', function(d) {return placeStation(d,0,lastLat,lastLon)})
-          .attr('cy', function(d) {return placeStation(d,1,lastLat,lastLon)})
+          .attr('cx', function(d) {return placeStation(d,0)})
+          .attr('cy', function(d) {return placeStation(d,1)})
           .attr('r', 3)
           .attr('stroke-width', '1')
           .attr('stroke', 'steelblue')
@@ -192,8 +192,8 @@
       cityText.enter()
           .append('text')
           .attr("class", "maptext")
-          .attr('x', function(d) {return placeStation(d,0,lastLat,lastLon)})
-          .attr('y', function(d) {return placeStation(d,1,lastLat,lastLon)})
+          .attr('x', function(d) {return placeStation(d,0)})
+          .attr('y', function(d) {return placeStation(d,1)})
           .attr('dx', 5)
           .attr('dy', 3)
           .attr('stroke', function(d) {return determineColor(d,points)})
@@ -272,28 +272,22 @@
 
     });
 
- <!--   svg.append("rect")	-->
- <!--     .attr("class", "overlay")	-->
- <!--     .attr("width", width)	-->
- <!--     .attr("height", height)	-->
- <!--     .call(zoom);		-->
-
   });
 
-function placeStation(d,ll,lastLat,lastLon) {
+function placeStation(d,ll) {
         var lat = lastLat;
 	var lon = lastLon;
 	if (d.Display == 1) {
-		lat = d.Latitude
-		lon = d.Longitude
+		lat = d.Latitude;
+		lon = d.Longitude;
 	} else {
 		if (ll == 1) {
 			lastLat = lastLat - 0.6;
 		};
 	};
 	if (lon == -118.0 && lat < 24.0) {
-		lastLon = -100.0
-		lastLat = 28.8
+		lastLon = -100.0;
+		lastLat = 28.8;
 	};
 	return projection([lon, lat])[ll];
 }
