@@ -284,11 +284,12 @@ function placeStation(d,ll) {
 		if (ll == 1) {
 			lastLat = lastLat - 0.6;
 		};
+		if (lat < 24.0) {
+			lastLat = 29.4;
+			lastLon = lastLon - 8.0;
+		};
 	};
-	if (lon == -118.0 && lat < 24.0) {
-		lastLat = 29.4;
-		lastLon = -100.0;
-	};
+
 	return projection([lon, lat])[ll];
 }
 function determineColor(d,points) {
