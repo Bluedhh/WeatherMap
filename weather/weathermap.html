@@ -102,10 +102,10 @@
     .scaleExtent([1, 4])
     .on("zoom", zoomed);  
 
-  var clickRankNice = function() {location.replace('http://weather.qtr-horse.com/weathermap.html?rankBy=NicePct');};
-  var clickRankNiceHumid = function() {location.replace('http://weather.qtr-horse.com/weathermap.html?rankBy=NiceHumid');};
-  var clickRankDecent = function() {location.replace('http://weather.qtr-horse.com/weathermap.html?rankBy=DecentPct');};
-  var clickRankDecentHumid = function() {location.replace('http://weather.qtr-horse.com/weathermap.html?rankBy=DecentHumid');};
+  var clickRankNice = function() {location.replace('http://weather.qtr-horse.com?rankBy=NicePct');};
+  var clickRankNiceHumid = function() {location.replace('http://weather.qtr-horse.com?rankBy=NiceHumid');};
+  var clickRankDecent = function() {location.replace('http://weather.qtr-horse.com?rankBy=DecentPct');};
+  var clickRankDecentHumid = function() {location.replace('http://weather.qtr-horse.com?rankBy=DecentHumid');};
 
   var clickState = function(d) {console.log('clickState');
         		   var div = document.getElementById('stateLabel');
