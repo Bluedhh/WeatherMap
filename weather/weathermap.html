@@ -294,9 +294,9 @@ function placeStation(d,ll) {
 function determineColor(d,points) {
         var rank = d.Rank;
 	var tot = points;
-	if (rank / tot < .25) {return 'green'};
-	if (rank / tot < .5) {return 'blue'};
-	if (rank / tot < .75) {return 'orange'};
+	if (rank / tot <= .25) {return 'green'};
+	if (rank / tot <= .5) {return 'blue'};
+	if (rank / tot <= .75) {return 'orange'};
 	return 'red';
 }
 })();
