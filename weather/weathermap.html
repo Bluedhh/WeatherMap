@@ -86,6 +86,7 @@
   var lastLabel = void 0;
   var points = 0;
   var lastLat = 30.0;
+  var lastLon = -118.0;
 
   var lastDet = '';
   var lastDetDate = '2099-12-31';
@@ -186,6 +187,7 @@
 	  .on('click', clickPoint);
 
       lastLat = 30.0;
+      lastLon = -118.0;
 
       cityText.enter()
           .append('text')
@@ -280,7 +282,7 @@
 
 function placeStation(d,ll) {
         var lat = lastLat;
-	var lon = -118.0;
+	var lon = lastLon;
 	if (d.Display == 1) {
 		lat = d.Latitude
 		lon = d.Longitude
@@ -289,6 +291,10 @@ function placeStation(d,ll) {
 			lastLat = lastLat - 0.6;
 		};
 	};
+	if (lon == -118.0 && lat < 23.0) {
+		lastLon = -110.0
+		lastLat = 27.6
+	}
 	return projection([lon, lat])[ll];
 }
 function determineColor(d,points) {
