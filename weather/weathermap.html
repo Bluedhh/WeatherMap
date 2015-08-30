@@ -305,8 +305,9 @@ function placeLon(d) {
 		lon = d.Longitude
 	} else {
 		if (lonCount == 12) {
-			lastLon = lastLon - 8.0;
-		}	};
+			lastLon = lastLon + 8.0;
+		}
+	};
 	return projection([lon, 30.0])[0];
 }
 function determineColor(d,points) {
