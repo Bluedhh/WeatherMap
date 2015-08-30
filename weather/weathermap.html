@@ -285,11 +285,11 @@
   });
 
 function placeLat(d) {
-	latCount = latCount + 1;
         var lat = lastLat;
 	if (d.Display == 1) {
 		lat = d.Latitude
 	} else {
+		latCount = latCount + 1;
 		if (latCount == 12) {
 			lastLat = 28.8;
 		} else {
@@ -299,11 +299,11 @@ function placeLat(d) {
 	return projection([-118.0, lat])[1];
 }
 function placeLon(d) {
-	lonCount = lonCount + 1;
 	var lon = lastLon;
 	if (d.Display == 1) {
 		lon = d.Longitude
 	} else {
+		lonCount = lonCount + 1;
 		if (lonCount == 12) {
 			lastLon = lastLon + 8.0;
 		}
