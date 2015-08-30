@@ -86,7 +86,7 @@
   var lastLabel = void 0;
   var points = 0;
   var lastLat = 30.0;
-  var lastLon = -118.0;
+  var lastLon = -120.0;
   var latCount = 0;
   var lonCount = 0;
 
@@ -189,7 +189,7 @@
 	  .on('click', clickPoint);
 
       lastLat = 30.0;
-      lastLon = -118.0;
+      lastLon = -120.0;
       latCount = 0;
       lonCount = 0;
 
@@ -309,7 +309,7 @@ function placeLon(d) {
 	} else {
 		lonCount = lonCount + 1;
 		if (lonCount == 12) {
-			lastLon = lastLon + 8.0;
+			lastLon = lastLon + 7.0;
 		}
 	};
 	return projection([lon, lat])[0];
