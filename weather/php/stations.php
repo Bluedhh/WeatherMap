@@ -17,6 +17,7 @@ select @rownum := @rownum + 1 Rank
      , Latitude
      , Longitude
      , Elevation
+     , Webcam
      , Latest
      , Readings
      , AvgHI
@@ -44,6 +45,7 @@ FROM (select @rownum := 0) as r
      , Xref.Latitude
      , Xref.Longitude
      , Xref.Elevation
+     , Xref.Webcam
      , Date(max(ol.When)) Latest
      , count(*) Readings
      , Round(Avg(HeatIndex),1) AvgHI
