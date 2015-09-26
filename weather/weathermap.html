@@ -385,7 +385,7 @@ function stationLatest(d,points,lastDet,lastDetDate) {
         	lastDetDate: lastDetDate}
 
 	function myFunction(arr) {
-	    lastDetDate = arr[0].When;
+	    lastDetDate = arr[0].When.substring(0,8);
 	    var html = '<h3>' + d.Name + 
                    '<br> Rank: ' + d.Rank + ' of ' + points +
                    '</h3><hr><table>' +
