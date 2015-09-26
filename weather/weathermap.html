@@ -64,6 +64,9 @@
       fill: none;
       pointer-events: all;
     }
+    a {
+      pointer-events: auto;
+    }
   </style>
 </head>
 
@@ -334,6 +337,7 @@ function stationDetails(d,points) {
                    '<tr><td>Elevation</td><td> ' + d.Elevation + '</td></tr>' +
                    '<tr><td>Latitude</td><td>' + d.Latitude + 'º</td></tr>' +
                    '<tr><td>Longitude</td><td> ' + d.Longitude + 'º</td></tr>' +
+                   '<tr><td><a target="Webcam" href="' + d.Webcam + '">Live Webcam</a></td><td>&nbsp;</td></tr>' +
 		   '</table><hr><table>' +
                    '<tr><td>Readings</td><td> ' + d.Readings + ' (' + d.Latest + ')' + '</td></tr>' +
                    '<tr><td>% Nice days (50-80)</td><td> <b>' + d.NicePct + '%</b></td></tr>' +
@@ -357,14 +361,14 @@ function stationDetails(d,points) {
 	return html;
 }
 function stationLatest(d,points,lastDet,lastDetDate) {
-        if (d.Station == lastDet) {
+   if (d.Station == lastDet) {
   	   var myDate = new Date(lastDetDate);
 	   var dayOfMonth = myDate.getDate();
 	   myDate.setDate(dayOfMonth - 1);
-           lastDetDate = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate();
-        } else {
+       lastDetDate = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate();
+    } else {
  	   lastDet = d.Station;
-           lastDetDate = '2099-12-31';
+       lastDetDate = '2099-12-31';
  	}
 	var xmlhttp = new XMLHttpRequest();
 	var url = 'php/stationLatest.php?station=' + d.Station + '&date='+ lastDetDate;
@@ -388,7 +392,7 @@ function stationLatest(d,points,lastDet,lastDetDate) {
                    '<tr><td>Elevation</td><td> ' + d.Elevation + '</td></tr>' +
                    '<tr><td>Latitude</td><td>' + d.Latitude + 'º</td></tr>' +
                    '<tr><td>Longitude</td><td> ' + d.Longitude + 'º</td></tr>' +
-                   '<tr><td><a target="Webcam" href="' + d.Webcam + '">Webcam</a></td><td>&nbsp;</td></tr>' +
+                   '<tr><td><a target="Webcam" href="' + d.Webcam + '">Live Webcam</a></td><td>&nbsp;</td></tr>' +
 		   '</table><hr><table>' +
                    '<tr><td>Reading</td><td> ' + arr[0].When + '</td></tr>' +
                    '<tr><td>Temperature</td><td>' + arr[0].Temperature + 'º</td></tr>' +
