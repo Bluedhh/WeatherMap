@@ -1,12 +1,12 @@
 use weather;
 select high.ReadingDate
-     , high.HighTemp
+     , high.DayTemp
      , high.DayHumid
-     , low.LowTemp
+     , low.NightTemp
      , low.NightHumid
   from
 (select Date(ol.When) ReadingDate
-     , Round(Temperature,1) HighTemp
+     , Round(Temperature,1) DayTemp
      , Round(Humidity,1) DayHumid
   from Log as ol
  where Temperature between -40 and 130
@@ -14,7 +14,7 @@ select high.ReadingDate
    and hour(`When`) = 14) as high
 ,   
 (select Date(ol.When) ReadingDate
-     , Round(Temperature,1) LowTemp
+     , Round(Temperature,1) NightTemp
      , Round(Humidity,1) NightHumid
   from Log as ol
  where Temperature between -40 and 130

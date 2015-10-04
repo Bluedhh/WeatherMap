@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>US Weather</title>
+  <title>Weather Chart</title>
   <style>
     .boundary {
       fill: none;
@@ -71,345 +71,47 @@
 </head>
 
 <body>
-  <div id="map" class="mapdiv"></div>
-  <div id="stationDetails"></div>
-  <div id="stateLabel"></div>
+  <div class='container'>
+    <h1 class='title'>Timeseries Chart</h1>
+    <div class='chart'>
+      <div id='chart'>
+      </div>
+    </div>
+  </div>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
 
   <script>
 (function(){
 
-  var rankBy = location.search.split('rankBy=')[1] ? location.search.split('rankBy=')[1] : 'NicePct';
+var chart = c3.generate({
+    data: {
+        x: 'x',
+//        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
+        columns: [
+            ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
+//            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
+            ['data1', 30, 200, 100, 400, 150, 250],
+            ['data2', 130, 340, 200, 500, 250, 350]
+        ]
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+            }
+        }
+    }
+});
 
-  var height = 640;
-  var width = 1200;
-  var projection = d3.geo.albersUsa();
-  var map = void 0;
-  var lastLabel = void 0;
-  var points = 0;
-  var lastLat = 30.0;
-  var lastLon = -120.0;
-  var latCount = 0;
-  var lonCount = 0;
-
-  var lastDet = '';
-  var lastDetDate = '2099-12-31';
-
-  var path = d3.geo.path().projection(projection);
-
-  var zoomed = function () {
-    map.attr("transform", "translate("+ d3.event.translate + ")scale(" + d3.event.scale + ")");
-    d3.selectAll("circle").attr("r", 4/d3.event.scale);
- <!--   d3.selectAll("text").attr('font-size',(8 / d3.event.scale) + 'px');  -->
-  };
-
-  var zoom = d3.behavior.zoom()
-    .scaleExtent([1, 4])
-    .on("zoom", zoomed);  
-
-  var clickRankNice = function() {location.replace('http://weather.qtr-horse.com?rankBy=NicePct');};
-  var clickRankNiceHumid = function() {location.replace('http://weather.qtr-horse.com?rankBy=NiceHumid');};
-  var clickRankDecent = function() {location.replace('http://weather.qtr-horse.com?rankBy=DecentPct');};
-  var clickRankDecentHumid = function() {location.replace('http://weather.qtr-horse.com?rankBy=DecentHumid');};
-
-  var clickState = function(d) {console.log('clickState');
-        		   var div = document.getElementById('stateLabel');
-                	   if (div.style.left != '-150px' && lastLabel == d.properties.NAME_1)
-				leaveState(d)
-			   else
-				enterState(d);
-      			  };
-  var enterState = function(d) {console.log('d', d, 'event', d3.event);
-        		   var div = document.getElementById('stateLabel');
-                	   div.style.left = (d3.event.pageX - 50) +'px';
-                	   div.style.top = (d3.event.pageY - 30) + 'px';
-        		   div.innerHTML = wrapName(d.properties.NAME_1);
-    			   usa.attr('fill-opacity', 0.2); // Another update!
-    			   var jack = d3.select('#S' + d.properties.ID_1);
-    			   jack.attr('fill-opacity', 1);
-			   lastLabel = d.properties.NAME_1;
-      			  };
-  var leaveState = function(d) {console.log('d', d, 'event', d3.event);
-        		   var div = document.getElementById('stateLabel');
-                	   div.style.left = '-150px';
-                	   div.style.top = '-150px';
-        		   div.innerHTML = '';
-    			   usa.attr('fill-opacity', 1); // Another update!
-			   lastLabel = '';
-      			  };
-  var clickStation = function(d) {console.log('d', d, 'event', d3.event);
-    			   usa.attr('fill-opacity', 1.0); // Another update!
-        		   var div = document.getElementById('stationDetails');
-        		   div.innerHTML = stationDetails(d,points);
-      			  };
-  var clickPoint = function(d) {console.log('d', d, 'event', d3.event);
-    			   usa.attr('fill-opacity', 1.0); // Another update!
-        		   var rez = stationLatest(d,points,lastDet,lastDetDate);
-			   lastDet = rez.lastDet;
-			   lastDetDate = rez.lastDetDate;
-      			  };
-
-  var svg = d3.select("#map")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height);
-
-  d3.json('usa-topo2.json', function(data) {
-    var country = topojson.feature(data, data.objects.USA_adm1);   
-    var b, s, t;
-    projection.scale(1).translate([0, 0]);
-    var b = path.bounds(country);
-    var s = .9 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
-    var t = [((width - s * (b[1][0] + b[0][0])) / 2) + 125, (height - s * (b[1][1] + b[0][1])) / 2];
-    projection.scale(s).translate(t);
-
-    map = svg.append('g').attr('class', 'boundary');
-    usa = map.selectAll('path').data(country.features);
-
-    usa.enter()
-       .append('path')
-       .attr('d', path)
-       .attr('id', function(d) {return 'S' + d.properties.ID_1})
-       .on('click',clickState);
-
-    var color = d3.scale.linear().domain([0,50]).range(['#ffff00','#99dfd3']);
-    usa.attr('fill', function(d,i) {return color(i)});
-
-    d3.json('php/stations.php?rankBy=' + rankBy, function(cities) {
-      var cityPoints = svg.select('g').selectAll('circle').data(cities);
-      var cityText = svg.select('g').selectAll('text').data(cities);
-      points = cities.length;
-
-      cityPoints.enter()
-          .append('circle')
-          .attr('cx', function(d) {return placeLon(d)})
-          .attr('cy', function(d) {return placeLat(d)})
-          .attr('r', 3)
-          .attr('stroke-width', '1')
-          .attr('stroke', 'steelblue')
-          .attr('fill', 'steelblue')
-	  .on('click', clickPoint);
-
-      lastLat = 30.0;
-      lastLon = -120.0;
-      latCount = 0;
-      lonCount = 0;
-
-      cityText.enter()
-          .append('text')
-          .attr("class", "maptext")
-          .attr('x', function(d) {return placeLon(d)})
-          .attr('y', function(d) {return placeLat(d)})
-          .attr('dx', 5)
-          .attr('dy', 3)
-          .attr('stroke', function(d) {return determineColor(d,points)})
-	  .on('click', clickStation)
-          .text(function(d) {return d.Name + ' (' + d.Rank + ')'});
-
-      clickStation(cities[0]);
-
-      var txtcol = 'black';
-      if (rankBy == 'NicePct') {txtcol = 'red'};
-      svg.select('g')
-       .append('text')
-       .attr('stroke', txtcol)
-       .attr('x', 500)
-       .attr('y', 25)
-       .attr('class', 'maptext')
-       .on('click', clickRankNice)
-       .text('Rank by Nice %');
-      if (rankBy == 'NiceHumid') {txtcol = 'red'} else {txtcol = 'black'};
-      svg.select('g')
-       .append('text')
-       .attr('stroke', txtcol)
-       .attr('x', 580)
-       .attr('y', 25)
-       .attr('class', 'maptext')
-       .on('click', clickRankNiceHumid)
-       .text('Rank by Nice & Humid');
-      if (rankBy == 'DecentPct') {txtcol = 'red'} else {txtcol = 'black'};
-      svg.select('g')
-       .append('text')
-       .attr('stroke', txtcol)
-       .attr('x', 500)
-       .attr('y', 40)
-       .attr('class', 'maptext')
-       .on('click', clickRankDecent)
-       .text('Rank by Decent %');
-      if (rankBy == 'DecentHumid') {txtcol = 'red'} else {txtcol = 'black'};
-      svg.select('g')
-       .append('text')
-       .attr('stroke', txtcol)
-       .attr('x', 580)
-       .attr('y', 40)
-       .attr('class', 'maptext')
-       .on('click', clickRankDecentHumid)
-       .text('Rank by Decent & Humid');
-
-      svg.select('g')
-       .append('text')
-       .attr('stroke', 'green')
-       .attr('x', 900)
-       .attr('y', 10)
-       .attr('class', 'maptext')
-       .text('Top Quartile')
-      svg.select('g')
-       .append('text')
-       .attr('stroke', 'blue')
-       .attr('x', 900)
-       .attr('y', 25)
-       .attr('class', 'maptext')
-       .text('2nd Quartile')
-      svg.select('g')
-       .append('text')
-       .attr('stroke', 'orange')
-       .attr('x', 900)
-       .attr('y', 40)
-       .attr('class', 'maptext')
-       .text('3rd Quartile')
-      svg.select('g')
-       .append('text')
-       .attr('stroke', 'red')
-       .attr('x', 900)
-       .attr('y', 55)
-       .attr('class', 'maptext')
-       .text('Bottom Quartile')
-
-
+setTimeout(function () {
+    chart.load({
+        columns: [
+            ['data3', 400, 500, 450, 700, 600, 500]
+        ]
     });
-
- <!--   svg.append("rect")	-->
- <!--     .attr("class", "overlay")	-->
- <!--     .attr("width", width)	-->
- <!--     .attr("height", height)	-->
- <!--     .call(zoom);		-->
-
-  });
-
-function placeLat(d) {
-        var lat = lastLat;
-	var lon = -118.0;
-	if (d.Display == 1) {
-		lat = d.Latitude
-		lon = d.Longitude
-	} else {
-		latCount = latCount + 1;
-		if (latCount == 12) {
-			lastLat = 28.8;
-		} else {
-			lastLat = lastLat - 0.6;
-		};
-	};
-	return projection([lon, lat])[1];
+}, 1000);
 }
-function placeLon(d) {
-        var lat = 30.0;
-	var lon = lastLon;
-	if (d.Display == 1) {
-		lat = d.Latitude
-		lon = d.Longitude
-	} else {
-		lonCount = lonCount + 1;
-		if (lonCount == 12) {
-			lastLon = lastLon + 7.0;
-		}
-	};
-	return projection([lon, lat])[0];
-}
-function determineColor(d,points) {
-        var rank = d.Rank;
-	var tot = points;
-	if (rank / tot <= .25) {return 'green'};
-	if (rank / tot <= .5) {return 'blue'};
-	if (rank / tot <= .75) {return 'orange'};
-	return 'red';
-}
-})();
-
-function wrapName(d) {
-	return '<p align="center" width="100%">' + d + '</p>';
-}
-function stationDetails(d,points) {
-	var html = '<h3>' + d.Name + 
-                   '<br> Rank: ' + d.Rank + ' of ' + points +
-                   '</h3><hr><table>' +
-                   '<tr><td>Station</td><td> ' + d.Station + '</td></tr>' +
-                   '<tr><td>Elevation</td><td> ' + d.Elevation + '</td></tr>' +
-                   '<tr><td>Latitude</td><td>' + d.Latitude + 'º</td></tr>' +
-                   '<tr><td>Longitude</td><td> ' + d.Longitude + 'º</td></tr>' +
-                   '<tr><td><a target="Webcam" href="' + d.Webcam + '">Live Webcam</a></td><td><a target="Conditions" href="http://www.wunderground.com/personal-weather-station/dashboard?ID=' + d.Station + '">Current Conditions</a></td></tr>' +
-		   '</table><hr><table>' +
-                   '<tr><td>Readings</td><td> ' + d.Readings + ' (' + d.Latest + ')' + '</td></tr>' +
-                   '<tr><td>% Nice days (50-80)</td><td> <b>' + d.NicePct + '%</b></td></tr>' +
-                   '<tr><td>% Decent days (30-90)</td><td> <b>' + d.DecentPct + '%</b></td></tr>' +
-                   '<tr><td>% Warm days (80-90)</td><td> ' + d.WarmPct + '%</td></tr>' +
-                   '<tr><td>% Cool days (30-50)</td><td> ' + d.CoolPct + '%</td></tr>' +
-                   '<tr><td>% Hot days (&gt;90)</td><td> ' + d.HotPct + '%</td></tr>' +
-                   '<tr><td>% Cold days (&lt;30)</td><td> ' + d.ColdPct + '%</td></tr>' +
-                   '<tr><td>% Humid days</td><td> ' + d.HumidPct + '%</td></tr>' +
-                   '<tr><td>% Rainy days*</td><td>' + d.RainyPct + '%</td></tr>' +
-                   '<tr><td>Avg heat index</td><td> ' + d.AvgHI + 'º</td></tr>' +
-                   '<tr><td>Avg temp</td><td> ' + d.AvgTemp + 'º</td></tr>' +
-                   '<tr><td>Max temp</td><td> ' + d.MaxTemp + 'º</td></tr>' +
-                   '<tr><td>Min temp</td><td> ' + d.MinTemp + 'º</td></tr>' +
-                   '<tr><td>Avg nighly temp</td><td> ' + d.NightlyAvg + 'º</td></tr>' +
-                   '<tr><td>Avg daily diff</td><td> ' + d.DailyDiff + 'º</td></tr>' +
-                   '<tr><td>Avg humidity</td><td> ' + d.AvgHumid + '%</td></tr>' +
-                   '<tr><td>Avg dew point</td><td> ' + d.AvgDP + 'º</td></tr>' +
-		   '</table><hr>Summary of 2:00pm readings' +
-                   '<br>* Rain data is unreliable';
-	return html;
-}
-function stationLatest(d,points,lastDet,lastDetDate) {
-   if (d.Station == lastDet) {
-  	   var myDate = new Date(lastDetDate);
-	   var dayOfMonth = myDate.getDate();
-<!--	   myDate.setDate(dayOfMonth - 1);	-->
-       lastDetDate = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate();
-    } else {
- 	   lastDet = d.Station;
-       lastDetDate = '2099-12-31';
- 	}
-	var xmlhttp = new XMLHttpRequest();
-	var url = 'php/stationLatest.php?station=' + d.Station + '&date='+ lastDetDate;
-
-	xmlhttp.open("GET", url, false);
-	xmlhttp.send();
-
-        if (xmlhttp.status === 200) {
-	   var myArr = JSON.parse(xmlhttp.responseText);
-	   myFunction(myArr);
-	}
-
-    	return {lastDet: lastDet,
-        	lastDetDate: lastDetDate}
-
-	function myFunction(arr) {
-	    lastDetDate = arr[0].When.substring(0,10);
-	    var html = '<h3>' + d.Name + 
-                   '<br> Rank: ' + d.Rank + ' of ' + points +
-                   '</h3><hr><table>' +
-                   '<tr><td>Elevation</td><td> ' + d.Elevation + '</td></tr>' +
-                   '<tr><td>Latitude</td><td>' + d.Latitude + 'º</td></tr>' +
-                   '<tr><td>Longitude</td><td> ' + d.Longitude + 'º</td></tr>' +
-                   '<tr><td><a target="Webcam" href="' + d.Webcam + '">Live Webcam</a></td><td><a target="Conditions" href="http://www.wunderground.com/personal-weather-station/dashboard?ID=' + d.Station + '">Current Conditions</a></td></tr>' +
-		   '</table><hr><table>' +
-                   '<tr><td>Reading</td><td> ' + arr[0].When + '</td></tr>' +
-                   '<tr><td>Temperature</td><td>' + arr[0].Temperature + 'º</td></tr>' +
-                   '<tr><td>Heat index</td><td>' + arr[0].HeatIndex + 'º</td></tr>' +
-                   '<tr><td>Humidity</td><td>' + arr[0].Humidity + '%</td></tr>' +
-                   '<tr><td>DewPoint</td><td>' + arr[0].DewPoint + 'º</td></tr>' +
-                   '<tr><td>Wind Direction</td><td>' + arr[0].WindDir + '</td></tr>' +
-                   '<tr><td>Wind Speed</td><td>' + arr[0].WindSpeed + '</td></tr>' +
-                   '<tr><td>Wind Gust</td><td>' + arr[0].WindGust + '</td></tr>' +
-                   '<tr><td>Pressure</td><td>' + arr[0].Pressure + '</td></tr>' +
-                   '<tr><td>Rain Rate</td><td>' + arr[0].RainRate + '</td></tr>' +
-		   '</table><hr>Latest data';
-	    var div = document.getElementById('stationDetails');
-	    div.innerHTML = html;
-	}
-}
-
  </script>
 </body>
